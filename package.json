@@ -1,0 +1,49 @@
+{
+  "name": "gotit-chat",
+  "version": "1.0.0",
+  "description": "Simple chat app - built with React, Redux & Firebase",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "webpack-dev-server --config config/webpack.dev.config.js",
+    "build": "webpack --config config/webpack.prod.config.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/npke/gotit-chat.git"
+  },
+  "keywords": [
+    "chat",
+    "app",
+    "react",
+    "redux",
+    "firebase"
+  ],
+  "author": "Ke Nguyen",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/npke/gotit-chat/issues"
+  },
+  "homepage": "https://github.com/npke/gotit-chat#readme",
+  "dependencies": {
+    "css-loader": "^0.28.11",
+    "firebase": "^4.11.0",
+    "react": "^16.2.0",
+    "react-dom": "^16.2.0",
+    "redux": "^3.7.2",
+    "semantic-ui-css": "^2.3.1",
+    "semantic-ui-react": "^0.79.0",
+    "webpack-cli": "^2.0.12"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.4",
+    "babel-preset-env": "^1.6.1",
+    "babel-preset-react": "^6.24.1",
+    "file-loader": "^1.1.11",
+    "style-loader": "^0.20.3",
+    "url-loader": "^1.0.1",
+    "webpack": "^4.1.1",
+    "webpack-dev-server": "^3.1.1"
+  }
+}
