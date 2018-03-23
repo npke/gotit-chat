@@ -1,5 +1,14 @@
-import React from 'react'
+import React from 'react';
+import { connect } from 'react-redux';
 
-const App = () => (<h1>GotIt Chat</h1>)
+import LoginForm from './containers/LoginForm';
 
-export default App;
+const App = ({ auth }) => {
+  return auth.isLoggedIn ? <h1>Chatboard</h1> : <LoginForm />
+};
+
+const mapStateToProps = ({ auth }) => ({
+  auth,
+});
+
+export default connect(mapStateToProps, null)(App);
