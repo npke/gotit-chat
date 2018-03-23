@@ -5,6 +5,9 @@ const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 const LOGIN_FAILURE = 'LOGIN_FAILURE';
 const LOGOUT = 'LOGOUT';
 
+const UPDATE_PROFILE_REQUEST = 'UPDATE_PROFILE_REQUEST';
+const UPDATE_PROFILE_SUCCESS = 'UPDATE_PROFILE_SUCCESS';
+
 const loginSuccess = (user) => ({
   type: LOGIN_SUCCESS,
   user,
@@ -29,16 +32,36 @@ const logout = () => ({
   type: LOGOUT
 });
 
+const updateProfileSuccess = (updatedProfile) => ({
+  type: UPDATE_PROFILE_SUCCESS,
+  updatedProfile,
+});
+
+const updateProfile = (userRef, profile) => {
+  return dispatch => {
+    dispatch({ type: UPDATE_PROFILE_REQUEST });
+
+    return userRef.set(profile, { merge: true })
+      .then(() => dispatch(updateProfileSuccess(profile)));
+  }
+};
+
 const actions = {
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
   LOGOUT,
+
+  UPDATE_PROFILE_REQUEST,
+  UPDATE_PROFILE_SUCCESS,
   
   login,
   loginSuccess,
   loginFailure,
-  logout
+  logout,
+
+  updateProfile,
+  updateProfileSuccess,
 };
 
 export default actions;
