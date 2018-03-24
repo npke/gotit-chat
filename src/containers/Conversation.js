@@ -4,6 +4,7 @@ import { Icon } from 'semantic-ui-react';
 
 import "./Conversation.css";
 import ConversationActions from '../actions/conversation';
+import Message from '../components/Message';
 
 const Conversation = ({ partner, messages, onCloseConversation }) => (
   <div className="conversation"> 
@@ -18,7 +19,9 @@ const Conversation = ({ partner, messages, onCloseConversation }) => (
     </div>
 
     <div className="conversation-body">
-      <h1>Message logs</h1>
+      {
+        messages.map(message => <Message content={message.content} fromPartner={message.from === partner.id} />)
+      }
     </div>
 
     <div className="message-input-container">
