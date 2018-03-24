@@ -20,7 +20,7 @@ const selectUser = (user) => {
     dispatch({ type: SELECT_USER, user });
 
     return user.docRef.update({ status: 'busy' })
-      .then(() => dispatch({ type: ConversationActions.INIT_CONVERSATION, partner: user }));
+      .then(() => dispatch(ConversationActions.initConversation(user)));
   }
 };
 
