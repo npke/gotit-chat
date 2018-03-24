@@ -38,3 +38,8 @@
 .message-item a {
   text-decoration: underline;
 }
+
+
+.system-message .message-item  {
+  background: none;
+}
