@@ -28,9 +28,13 @@ const login = (provider) => {
   };
 };
 
-const logout = () => ({
-  type: LOGOUT
-});
+const logout = (userRef) => {
+  return dispatch => {
+    dispatch({ type: LOGOUT });
+
+    return userRef.update({ status: 'offline' });
+  }
+};
 
 const updateProfileSuccess = (updatedProfile) => ({
   type: UPDATE_PROFILE_SUCCESS,

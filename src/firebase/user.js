@@ -28,6 +28,7 @@ const findOrCreateUser = (userData) => {
         docRef = data.ref
       });
 
+      docRef.update({ status: 'available' });
       return Object.assign({}, user, { docRef });
     });
 };
