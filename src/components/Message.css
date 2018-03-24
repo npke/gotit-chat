@@ -25,8 +25,16 @@
   color: #fff;
 }
 
+.message-container-left > .message-item a {
+  color: #fff;
+}
+
 .system-message {
   justify-content: center;
   font-style: italic;
   background: none;
+}
+
+.message-item a {
+  text-decoration: underline;
 }
