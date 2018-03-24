@@ -36,7 +36,9 @@ const login = (provider) => {
             conversation.once('value', (snapshot) => {
               const data = snapshot.val();
 
-              User.getUser(data.init).once('value', (partnerData) => {
+              const getPartner = user.id === data.init ? User.getUser(data.partner) : User.getUser(data.init);
+
+              getPartner.once('value', (partnerData) => {
                 const partner = partnerData.val();
 
                 dispatch({
