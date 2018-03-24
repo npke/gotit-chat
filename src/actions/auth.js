@@ -41,7 +41,7 @@ const updateProfile = (userRef, profile) => {
   return dispatch => {
     dispatch({ type: UPDATE_PROFILE_REQUEST });
 
-    return userRef.set(profile, { merge: true })
+    return userRef.update(profile)
       .then(() => dispatch(updateProfileSuccess(profile)));
   }
 };

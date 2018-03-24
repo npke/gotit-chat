@@ -4,19 +4,31 @@ import { Auth, Database } from './index';
 
 // Find or create user in the database
 const findOrCreateUser = (userData) => {
-  const usersRef = Database.collection('users');
+  const usersRef = Database.ref('users');
 
-  return usersRef.where('email', '==', userData.email).get()
+  return usersRef.orderByChild('email')
+    .equalTo(userData.email)
+    .limitToFirst(1)
+    .once('value')
     .then((snapshot) => {
-      if (!snapshot.size) {
+      if (!snapshot.exists()) {
         const newUser = Object.assign(userData, { updatedInfo: false });
         
-        return usersRef.add(newUser)
-          .then((docRef) => Object.assign({ docRef }, newUser))
-      }
+        const newUserRef = usersRef.push();
+        newUserRef.set(newUser);
 
-      const user = snapshot.docs[0];
-      return Object.assign({}, user.data(), { docRef: user.ref });
+        return Object.assign({}, newUser, { docRef: newUserRef });
+      }
+      
+      let user;
+      let docRef;
+
+      snapshot.forEach(data => {
+        user = data.val();
+        docRef = data.ref
+      });
+
+      return Object.assign({}, user, { docRef });
     });
 };
 
@@ -73,9 +85,13 @@ const login = (provider) => {
 };
 
 const getUsers = (callback) => {
-  return Database.collection('users')
-    .onSnapshot((snapshot) => {
-      const users = snapshot.docs.map((doc) => Object.assign(doc.data(), { docRef: doc.ref }));
+  return Database.ref('users')
+    .on('value', (snapshot) => {
+      const users = [];
+
+      snapshot.forEach(user => {
+        users.push(user.val());
+      });
 
       return callback(users);
     });

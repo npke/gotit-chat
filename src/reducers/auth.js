@@ -36,7 +36,8 @@ export default (state = {
     case actions.UPDATE_PROFILE_REQUEST:
       return Object.assign({}, state, { isUpdatingProfile: true });
     case actions.UPDATE_PROFILE_SUCCESS: 
-      return Object.assign({}, state, { user: action.updatedProfile });
+      const user = Object.assign({}, state.user, action.updatedProfile)      
+      return Object.assign({}, state, { user });
     case actions.LOGOUT:
       return {
         isLoggedIn: false,
