@@ -5,6 +5,7 @@ import './CharBoard.css';
 import UserInfo from '../containers/UserInfo';
 import UserList from '../containers/UserList';
 import Placeholder from './Placeholder';
+import Conversation from '../containers/Conversation';
 
 const ChatBoard = ({ inConversation }) => (
   <div className="chat-board">
@@ -16,7 +17,7 @@ const ChatBoard = ({ inConversation }) => (
 
     <div className="right-panel">
       {
-        inConversation ? <h1>Conversation</h1> :<Placeholder />
+        inConversation ? <Conversation /> : <Placeholder />
       }
     </div>
   </div>
