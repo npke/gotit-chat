@@ -48,13 +48,16 @@ class Conversation extends Component {
               <img className="user-profile-photo" src={partner.profilePhotoUrl} />
               <h3 className="user-title">{partner.name}</h3>
             </div>
-            <Icon onClick={onCloseConversation} size="large" name="close" />
+            <Icon onClick={() => onCloseConversation(this.props)} size="large" name="close" />
           </div>
         </div>
     
         <div id="conversation-body">
           {
-            messages.map((message, index) => <Message key={index} content={message.content} fromPartner={message.from === partner.id} />)
+            messages.map((message, index) => <Message
+              key={index} content={message.content}
+              from={message.from === 'system' ? 'system' : message.from === partner.id ? 'partner' : 'user'} 
+            />)
           }
         </div>
     
@@ -70,11 +73,11 @@ const mapStateToProps = ({ conversation, auth }) => ({
   user: auth.user,
   partner: conversation.partner,
   messages: conversation.messages,
-  conversationRef: conversation.docRef
+  conversationRef: conversation.docRef,
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onCloseConversation: () => dispatch(ConversationActions.closeConversation()),
+  onCloseConversation: (data) => dispatch(ConversationActions.closeConversation(data)),
   onSendMessage: (data) => dispatch(ConversationActions.sendMessage(data)), 
 });
 

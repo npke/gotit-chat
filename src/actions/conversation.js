@@ -1,4 +1,5 @@
 import Conversation from '../firebase/conversation';
+import User from '../firebase/user';
 
 const INIT_CONVERSATION = 'INIT_CONVERSATION';
 const CLOSE_CONVERSATION = 'CLOSE_CONVERSATION';
@@ -37,9 +38,16 @@ const sendMessage = ({ from, to, message, docRef }) => {
   }
 };
 
-const closeConversation = () => ({
-  type: CLOSE_CONVERSATION
-});
+const closeConversation = (data) => {
+  return dispatch => {
+    data.conversationRef.child('messages').push().set({ from: 'system', to: 'both', content: `Conversation was closed by ${data.user.name}` });
+    data.conversationRef.update({ status: 'ended '}); 
+    User.getUser(data.user.id).update({ status: 'available', currentConversation: null });
+    User.getUser(data.partner.id).update({ status: 'available', currentConversation: null });
+
+    return dispatch({ type: CLOSE_CONVERSATION });
+  }
+};
 
 export default {
   INIT_CONVERSATION,
@@ -49,4 +57,5 @@ export default {
   initConversation,
   closeConversation,
   sendMessage,
+  updateConversationMessages,
 }
