@@ -13,6 +13,15 @@ const initUserList = () => {
   }
 };
 
+const selectUser = (user) => {
+  return dispatch => {
+    dispatch({ type: CHAT_SELECT_USER, user });
+
+    return user.docRef.update({ status: 'busy' })
+      .then(() => dispatch())
+  }
+};
+
 export default {
   LOAD_USERS_REQUEST,
   LOAD_USERS_SUCCESS,
