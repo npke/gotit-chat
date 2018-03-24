@@ -2,6 +2,7 @@ import Conversation from '../firebase/conversation';
 
 const INIT_CONVERSATION = 'INIT_CONVERSATION';
 const CLOSE_CONVERSATION = 'CLOSE_CONVERSATION';
+const SELECT_USER = 'SELECT_USER';
 
 const UPDATE_CONVERSATION_MESSAGES = 'UPDATE_CONVERSATION_MESSAGES';
 
@@ -12,6 +13,9 @@ const updateConversationMessages = (messages) => ({
 
 const initConversation = (user, partner) => {
   return dispatch => {
+    dispatch({ type: SELECT_USER, user });
+
+    user.docRef.update({ status: 'busy' });
     return Conversation.createConversation(user, partner)
       .then((conversationRef) => {
         dispatch({
