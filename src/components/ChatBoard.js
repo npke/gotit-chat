@@ -7,12 +7,14 @@ import UserList from '../containers/UserList';
 import Placeholder from './Placeholder';
 import Conversation from '../containers/Conversation';
 
-const ChatBoard = ({ inConversation }) => (
+import ConversationActions from '../actions/conversation';
+
+const ChatBoard = ({ inConversation, createConversation, user }) => (
   <div className="chat-board">
     <div className="left-pannel">
       <UserInfo />
 
-      <UserList />
+      <UserList onSelectUser={partner => createConversation(user, partner)} />
     </div>
 
     <div className="right-panel">
@@ -23,8 +25,13 @@ const ChatBoard = ({ inConversation }) => (
   </div>
 );
 
-const mapStateToProps = ({ conversation }) => ({
-  inConversation: !!conversation.partner
+const mapStateToProps = ({ auth, conversation }) => ({
+  inConversation: !!conversation.partner,
+  user: auth.user,
 });
 
-export default connect(mapStateToProps, null)(ChatBoard);
+const mapDispatchToProps = (dispatch) => ({
+  createConversation: (user, partner) => dispatch(ConversationActions.initConversation(user, partner)),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(ChatBoard);

@@ -53,8 +53,7 @@ const mapStateToProps = ({ auth, users }) => ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  onInit: () => dispatch(UserActions.initUserList()),
-  onSelectUser: (user) => dispatch(UserActions.selectUser(user)),
+  onInit: () => dispatch(UserActions.initUserList())
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(UserList);
