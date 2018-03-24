@@ -1,0 +1,28 @@
+.user-info {
+  background: #fff;
+  padding: 24px 20px;
+  border-bottom: 2px solid rgba(34,36,38,.15);
+  display: flex;
+  align-items: center;
+}
+
+.user-details {
+  flex-grow: 1;
+}
+
+.user-title {
+  padding: 0px 10px;
+  margin-bottom: 0;
+  margin-top: 0px!important;
+}
+
+.user-profile-photo {
+  height: 50px;
+  border-radius: 500rem;
+}
+
+.user-email {
+  margin-left: 10px;
+  font-style: italic;
+  color: rgba(0, 0, 0, .40);
+}
