@@ -24,3 +24,9 @@
   background: #6435c9!important;
   color: #fff;
 }
+
+.system-message {
+  justify-content: center;
+  font-style: italic;
+  background: none;
+}
