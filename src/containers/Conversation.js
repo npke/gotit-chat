@@ -54,7 +54,7 @@ class Conversation extends Component {
     
         <div id="conversation-body">
           {
-            messages.map(message => <Message content={message.content} fromPartner={message.from === partner.id} />)
+            messages.map((message, index) => <Message key={index} content={message.content} fromPartner={message.from === partner.id} />)
           }
         </div>
     
