@@ -1,10 +1,12 @@
 import React from 'react';
+import { connect } from 'react-redux';
 
 import './CharBoard.css';
 import UserInfo from '../containers/UserInfo';
 import UserList from '../containers/UserList';
+import Placeholder from './Placeholder';
 
-const ChatBoard = () => (
+const ChatBoard = ({ inConversation }) => (
   <div className="chat-board">
     <div className="left-pannel">
       <UserInfo />
@@ -13,10 +15,15 @@ const ChatBoard = () => (
     </div>
 
     <div className="right-panel">
-      <h1>Conversation</h1>
+      {
+        inConversation ? <h1>Conversation</h1> :<Placeholder />
+      }
     </div>
   </div>
 );
 
+const mapStateToProps = ({ conversation }) => ({
+  inConversation: !!conversation.partner
+});
 
-export default ChatBoard;
+export default connect(mapStateToProps, null)(ChatBoard);
