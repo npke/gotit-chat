@@ -15,7 +15,7 @@ const findOrCreateUser = (userData) => {
         const newUser = Object.assign(userData, { updatedInfo: false });
         
         const newUserRef = usersRef.push();
-        newUserRef.set(newUser);
+        newUserRef.set(Object.assign({}, newUser, { id: newUserRef.key }));
 
         return Object.assign({}, newUser, { docRef: newUserRef });
       }
