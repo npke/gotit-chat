@@ -1,11 +1,12 @@
 import React from 'react';
 
 import './CharBoard.css';
+import UserInfo from '../containers/UserInfo';
 
 const ChatBoard = () => (
   <div className="chat-board">
     <div className="left-pannel">
-      <h1>User Info</h1>
+      <UserInfo />
 
       <h1>UserList</h1>
     </div>
