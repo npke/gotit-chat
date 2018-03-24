@@ -3,27 +3,46 @@ import { Segment } from 'semantic-ui-react';
 import { connect } from 'react-redux';
 
 import User from '../components/User';
+import Alert from '../components/Alert';
 import UserActions from '../actions/user';
 import "./UserList.css";
-
 
 class UserList extends Component {
   constructor(props) {
     super(props);
 
     this.props.onInit();
+    this.state = {
+      selectInvalidUser: false,
+    }
+  }
+
+  selectUser = (user) => {
+    if (user.status !== 'available') {
+      return this.setState({
+        selectInvalidUser: true,
+      });
+    }
+
+    return this.props.selectUser(user);
   }
 
   render() {
     const { users, onSelectUser, isLoading } = this.props;
     return (
-      <ul className="user-list">
+      <div>
+        <ul className="user-list">
+          {
+            isLoading
+            ? <Segment style={{ padding: '100px' }} basic loading></Segment>
+            : users.map((user) => <User onSelect={this.selectUser} key={user.id} {...user} />)
+          }
+        </ul>
+
         {
-          isLoading
-          ? <Segment style={{ padding: '100px' }} basic loading></Segment>
-          : users.map((user) => <User onSelect={() => onSelectUser(user)} key={user.id} {...user} />)
+          this.state.selectInvalidUser && <Alert onClose={() => this.setState({ selectInvalidUser: false })} title="User not available" message="This user is currently busy (yellow) or offline (red). Please select an available user (green)." />
         }
-      </ul>
+      </div>
     );
   }
 }
