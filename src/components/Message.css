@@ -1,0 +1,26 @@
+.message-container {
+  display: flex;
+}
+
+.message-container-left {
+  justify-content: flex-start;
+  margin-right: 10%;
+}
+
+.message-container-right {
+  justify-content: flex-end;
+  margin-left: 10%;
+}
+
+.message-item {
+  padding: 10px 20px;
+  background: #f2f2f2;
+  border-radius: 1.3em;
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
+.message-container-left > .message-item {
+  background: #6435c9!important;
+  color: #fff;
+}
