@@ -6,6 +6,11 @@ export default (state = { partner: null, messages: []}, action) => {
       return {
         partner: action.partner,
         messages: [],
+      };
+    case ConversationActions.CLOSE_CONVERSATION:
+      return {
+        partner: null,
+        messages: []
       }
     default: return state;
   }

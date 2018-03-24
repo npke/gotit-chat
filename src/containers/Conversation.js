@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { Icon } from 'semantic-ui-react';
 
 import "./Conversation.css";
+import ConversationActions from '../actions/conversation';
 
 const Conversation = ({ partner, messages, onCloseConversation }) => (
   <div className="conversation"> 
@@ -31,4 +32,8 @@ const mapStateToProps = ({ conversation }) => ({
   messages: conversation.messages
 });
 
-export default connect(mapStateToProps, null)(Conversation);
+const mapDispatchToProps = (dispatch) => ({
+  onCloseConversation: () => dispatch(ConversationActions.closeConversation()),
+});
+
+export default connect(mapStateToProps, mapDispatchToProps)(Conversation);
