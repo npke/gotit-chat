@@ -1,0 +1,20 @@
+.chat-board {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+}
+
+.left-pannel {
+  width: 350px;
+  height: 100%;
+  border-right: 2px solid rgba(34,36,38,.15);
+  display: flex;
+  flex-direction: column;
+}
+
+.right-panel {
+  flex-grow: 1;
+}
