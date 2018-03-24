@@ -21,7 +21,7 @@ button:focus {
   border-bottom: 2px solid rgba(34,36,38,.15);
 }
 
-.conversation-body {
+#conversation-body {
   flex-grow: 1;
   overflow-x: hidden;
   overflow-y: auto;
@@ -35,7 +35,7 @@ button:focus {
   justify-content: center;
 }
 
-.conversation-body::-webkit-scrollbar {
+#conversation-body::-webkit-scrollbar {
   width: 8px;
   height: 8px;
 }
