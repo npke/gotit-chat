@@ -91,7 +91,7 @@ const getUsers = (callback) => {
       const users = [];
 
       snapshot.forEach(user => {
-        users.push(user.val());
+        users.push(Object.assign({}, user.val(), { docRef: user.ref }));
       });
 
       return callback(users);
