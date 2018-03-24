@@ -46,16 +46,16 @@ const login = (provider) => {
                   partner,
                   docRef: conversation
                 });
-              });
-            });
 
-            return conversation.child('messages').on('value', (snapshot) => {
-              const messages = [];
-              snapshot.forEach((message) => {
-                messages.push(message.val());
+                conversation.child('messages').on('value', (snapshot) => {
+                  const messages = [];
+                  snapshot.forEach((message) => {
+                    messages.push(message.val());
+                  });
+        
+                  dispatch(ConversationActions.updateConversationMessages(messages));
+                });
               });
-    
-              dispatch(ConversationActions.updateConversationMessages(messages));
             });
           }
         });

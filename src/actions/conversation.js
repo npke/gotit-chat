@@ -27,6 +27,7 @@ const initConversation = (user, partner) => {
         });
 
         user.docRef.child('currentConversation').set(conversationRef.key);
+        conversationRef.child('messages').push().set({ from: 'system', to: 'both', content: `Conversation was initialized by ${user.name}` });
       });
   }
 };
