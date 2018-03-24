@@ -28,7 +28,6 @@ const findOrCreateUser = (userData) => {
         docRef = data.ref
       });
 
-      docRef.update({ status: 'available' });
       return Object.assign({}, user, { docRef });
     });
 };
@@ -98,7 +97,12 @@ const getUsers = (callback) => {
     });
 };
 
+const getUser = (key) => {
+  return Database.ref('users').child(key);
+};
+
 export default {
   login,
   getUsers,
+  getUser
 }

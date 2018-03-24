@@ -16,6 +16,7 @@ const initConversation = (user, partner) => {
     dispatch({ type: SELECT_USER, user });
 
     user.docRef.update({ status: 'busy' });
+    partner.docRef.update({ status: 'busy' });
     return Conversation.createConversation(user, partner)
       .then((conversationRef) => {
         dispatch({
@@ -24,14 +25,7 @@ const initConversation = (user, partner) => {
           docRef: conversationRef
         });
 
-        return conversationRef.child('messages').on('value', (snapshot) => {
-          const messages = [];
-          snapshot.forEach((message) => {
-            messages.push(message.val());
-          });
-
-          dispatch(updateConversationMessages(messages));
-        });
+        user.docRef.child('currentConversation').set(conversationRef.key);
       });
   }
 };

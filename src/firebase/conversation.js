@@ -7,7 +7,13 @@ export default {
       init: user.id,
       partner: partner.id,
     });
+
+    partner.docRef.child('currentConversation').set(newConversation.key);
     
     return newConversation;
+  },
+
+  getConversation(key) {
+    return Database.ref('conversations').child(key);
   }
 }

@@ -1,4 +1,6 @@
 import User from '../firebase/user';
+import Conversation from '../firebase/conversation';
+import ConversationActions from '../actions/conversation';
 
 const LOGIN_REQUEST = 'LOGIN_REQUEST';
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -23,7 +25,41 @@ const login = (provider) => {
     dispatch({ type: LOGIN_REQUEST });
 
     return User.login(provider)
-      .then(user => dispatch(loginSuccess(user)))
+      .then(user => {
+        user.docRef.update({ status: 'available', currentConversation: null });
+
+        user.docRef.on('value', (snapshot) => {
+          const data  = snapshot.val();
+
+          if (data.currentConversation) {
+            const conversation = Conversation.getConversation(data.currentConversation);
+            conversation.once('value', (snapshot) => {
+              const data = snapshot.val();
+
+              User.getUser(data.init).once('value', (partnerData) => {
+                const partner = partnerData.val();
+
+                dispatch({
+                  type: ConversationActions.INIT_CONVERSATION,
+                  partner,
+                  docRef: conversation
+                });
+              });
+            });
+
+            return conversation.child('messages').on('value', (snapshot) => {
+              const messages = [];
+              snapshot.forEach((message) => {
+                messages.push(message.val());
+              });
+    
+              dispatch(ConversationActions.updateConversationMessages(messages));
+            });
+          }
+        });
+
+        return dispatch(loginSuccess(user));
+      })
       .catch(error => dispatch(loginFailure(error)));
   };
 };
