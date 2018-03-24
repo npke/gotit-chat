@@ -1,5 +1,7 @@
 import User from '../firebase/user';
 
+import ConversationActions from './conversation';
+
 const LOAD_USERS_REQUEST = 'LOAD_USERS_REQUEST';
 const LOAD_USERS_SUCCESS = 'LOAD_USERS_SUCCESS';
 
@@ -15,10 +17,10 @@ const initUserList = () => {
 
 const selectUser = (user) => {
   return dispatch => {
-    dispatch({ type: CHAT_SELECT_USER, user });
+    dispatch({ type: SELECT_USER, user });
 
     return user.docRef.update({ status: 'busy' })
-      .then(() => dispatch())
+      .then(() => dispatch({ type: ConversationActions.INIT_CONVERSATION, partner: user }));
   }
 };
 
@@ -27,5 +29,6 @@ export default {
   LOAD_USERS_SUCCESS,
   SELECT_USER,
   
-  initUserList
+  initUserList,
+  selectUser,
 };
