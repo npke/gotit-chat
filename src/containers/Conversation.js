@@ -21,6 +21,23 @@ class Conversation extends Component {
     this.scrollToBottom();
   }
 
+  onKeyUp = (event) => {
+    if (event.keyCode === 13) {
+      const message = this.message.value;
+      
+      if (!message) return;
+
+      const { conversationRef, onSendMessage, partner, user } = this.props;
+      this.message.value = '';
+      return onSendMessage({
+        from: user.id,
+        to: partner.id,
+        docRef: conversationRef,
+        message,
+      });
+    }
+  }
+
   render() {
     const { partner, messages, onCloseConversation } = this.props;
     return (
@@ -42,20 +59,23 @@ class Conversation extends Component {
         </div>
     
         <div className="message-input-container">
-          <input className="message-input" type="text" />
+          <input onKeyUp={this.onKeyUp} ref={input => this.message = input} className="message-input" type="text" />
         </div>
       </div>
     );
   }
 };
 
-const mapStateToProps = ({ conversation }) => ({
+const mapStateToProps = ({ conversation, auth }) => ({
+  user: auth.user,
   partner: conversation.partner,
-  messages: conversation.messages
+  messages: conversation.messages,
+  conversationRef: conversation.docRef
 });
 
 const mapDispatchToProps = (dispatch) => ({
   onCloseConversation: () => dispatch(ConversationActions.closeConversation()),
+  onSendMessage: (data) => dispatch(ConversationActions.sendMessage(data)), 
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(Conversation);
