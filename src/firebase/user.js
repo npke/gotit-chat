@@ -70,8 +70,18 @@ const login = (provider) => {
     case 'google': return loginWithGoogle();
     default: throw new Error(`${provider} is not supported`);
   }
-}
+};
+
+const getUsers = (callback) => {
+  return Database.collection('users')
+    .onSnapshot((snapshot) => {
+      const users = snapshot.docs.map((doc) => Object.assign(doc.data(), { docRef: doc.ref }));
+
+      return callback(users);
+    });
+};
 
 export default {
   login,
+  getUsers,
 }
