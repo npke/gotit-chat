@@ -1,7 +1,7 @@
 const INIT_CONVERSATION = 'INIT_CONVERSATION';
 const CLOSE_CONVERSATION = 'CLOSE_CONVERSATION';
 
-const initConersation = (partner) => ({
+const initConversation = (partner) => ({
   type: INIT_CONVERSATION,
   partner,
 });
@@ -14,6 +14,6 @@ export default {
   INIT_CONVERSATION,
   CLOSE_CONVERSATION,
   
-  initConersation,
+  initConversation,
   closeConversation,
 }
