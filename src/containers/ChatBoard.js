@@ -22,8 +22,8 @@ class ChatBoard extends Component {
   }
 
   logout = () => {
-    const { user, onLogout } = this.props;
-    return onLogout(user);
+    const { user, onLogout, conversation } = this.props;
+    return onLogout(user, conversation);
   }
 
   selectUser = (partner) => {
@@ -117,7 +117,13 @@ const mapStateToProps = ({ auth, users, conversation }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onInit: () => dispatch(ChatActions.loadUsers()),
-  onLogout: (user) => dispatch(AuthActions.logout(user.docRef)),
+  onLogout: (user, converstation) => {
+    if (converstation.partner) {
+      dispatch(ChatActions.closeConversation(converstation, user));
+    }
+
+    dispatch(AuthActions.logout(user.docRef));
+  },
   onSelectUser: (user, partner) => dispatch(ChatActions.initConversation(user, partner)),
   onSendMessage: (conversation, message) => dispatch(ChatActions.sendMessage(conversation, message)),
   onCloseConversation: (conversation, user) => dispatch(ChatActions.closeConversation(conversation, user)),
