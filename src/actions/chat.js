@@ -50,18 +50,23 @@ const updateConversationMessages = (messages) => ({
 });
 
 const closeConversation = (conversation, user) => {
-  return dispatch => {
-    conversation.docRef.child('messages').push().set({ from: 'system', to: 'both', content: `Conversation was closed by ${user.name}` });
-    conversation.docRef.update({ status: 'ended' }); 
-    conversation.partner.docRef.update({ status: 'available', currentConversation: null });
-    user.docRef.update({ status: 'available', currentConversation: null });
 
-    // Unsubscribe listener
-    conversation.docRef.child('messages').off();
-    conversation.docRef.child('status').off();
+  // Unsubscribe listener
+  conversation.docRef.child('messages').off();
+  conversation.docRef.child('status').off();
 
-    return dispatch({ type: CLOSE_CONVERSATION });
+  // Conversation was closed & updated by partner user 
+  if (conversation.status === 'ended') {
+    return { type: CLOSE_CONVERSATION }
   }
+
+  // Send notification message and update conversation's status, user's status
+  conversation.docRef.child('messages').push().set({ from: 'system', to: 'both', content: `Conversation was closed by ${user.name}` });
+  conversation.docRef.update({ status: 'ended' }); 
+  conversation.partner.docRef.update({ status: 'available', currentConversation: null });
+  user.docRef.update({ status: 'available', currentConversation: null });
+
+  return { type: CLOSE_CONVERSATION };
 };
 
 const updateConversationStatus = (status) => ({
