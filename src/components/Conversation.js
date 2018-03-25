@@ -27,10 +27,7 @@ class Conversation extends Component {
       if (!message) return;
 
       this.message.value = '';
-      return onSendMessage({
-        to: partner.id,
-        message,
-      });
+      return this.props.onSendMessage(message);
     }
   }
 
