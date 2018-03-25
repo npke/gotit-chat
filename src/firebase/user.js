@@ -12,10 +12,15 @@ const findOrCreateUser = (userData) => {
     .once('value')
     .then((snapshot) => {
       if (!snapshot.exists()) {
-        const newUser = Object.assign(userData, { updatedInfo: false });
         
         const newUserRef = usersRef.push();
-        newUserRef.set(Object.assign({}, newUser, { id: newUserRef.key }));
+        const newUser = Object.assign({}, userData, {
+          id: newUserRef.key,
+          updatedInfo: false,
+          createdAt: -(new Date().getTime())
+        });
+
+        newUserRef.set(newUser);
 
         return Object.assign({}, newUser, { docRef: newUserRef });
       }
@@ -92,6 +97,7 @@ const login = (provider) => {
 
 const getUsers = (callback) => {
   return Database.ref('users')
+    .orderByChild('createdAt')
     .on('value', (snapshot) => {
       const users = [];
 
