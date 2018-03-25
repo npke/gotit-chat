@@ -1,5 +1,7 @@
 # Got It Chat - Simple messaging app built with React, Redux & Firebase
 
+### Demo
+https://gotit-chat.firebaseapp.com
 ### Screenshot
 
 #### Login with Facebook/Google  
