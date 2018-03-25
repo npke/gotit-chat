@@ -33,6 +33,15 @@ const login = (provider) => {
 
           if (data.currentConversation) {
             const conversation = Conversation.getConversation(data.currentConversation);
+
+            conversation.child('status').on('value', (snapshot) => {
+              const status = snapshot.val();
+              console.log(status);
+              if (status === 'ended') {
+                dispatch(ChatActions.updateConversationStatus(status));
+              }
+            });
+
             conversation.once('value', (snapshot) => {
               const data = snapshot.val();
 

@@ -8,6 +8,7 @@ const SELECT_USER = 'SELECT_USER';
 const INIT_CONVERSATION = 'INIT_CONVERSATION';
 const CLOSE_CONVERSATION = 'CLOSE_CONVERSATION';
 const UPDATE_CONVERSATION_MESSAGES = 'UPDATE_CONVERSATION_MESSAGES';
+const UPDATE_CONVERSATION_STATUS = 'UPDATE_CONVERSATION_STATUS';
 
 const loadUsers = () => {
   return dispatch => {
@@ -17,19 +18,8 @@ const loadUsers = () => {
   }
 };
 
-const selectUser = (user) => {
-  return dispatch => {
-    dispatch({ type: SELECT_USER, user });
-
-    return user.docRef.update({ status: 'busy' })
-      .then(() => dispatch(ConversationActions.initConversation(user)));
-  }
-};
-
 const initConversation = (user, partner) => {
   return dispatch => {
-    dispatch({ type: SELECT_USER, partner });
-
     user.docRef.update({ status: 'busy' });
     partner.docRef.update({ status: 'busy' });
     return Conversation.createConversation(user, partner)
@@ -62,16 +52,22 @@ const updateConversationMessages = (messages) => ({
 const closeConversation = (conversation, user) => {
   return dispatch => {
     conversation.docRef.child('messages').push().set({ from: 'system', to: 'both', content: `Conversation was closed by ${user.name}` });
-    conversation.docRef.update({ status: 'ended '}); 
+    conversation.docRef.update({ status: 'ended' }); 
     conversation.partner.docRef.update({ status: 'available', currentConversation: null });
     user.docRef.update({ status: 'available', currentConversation: null });
 
     // Unsubscribe listener
     conversation.docRef.child('messages').off();
+    conversation.docRef.child('status').off();
 
     return dispatch({ type: CLOSE_CONVERSATION });
   }
 };
+
+const updateConversationStatus = (status) => ({
+  type: UPDATE_CONVERSATION_STATUS,
+  status,
+});
 
 export default {
   LOAD_USERS_REQUEST,
@@ -81,11 +77,12 @@ export default {
   INIT_CONVERSATION,
   CLOSE_CONVERSATION,
   UPDATE_CONVERSATION_MESSAGES,
+  UPDATE_CONVERSATION_STATUS,
   
   loadUsers,
-  selectUser,
   initConversation,
   closeConversation,
   sendMessage,
   updateConversationMessages,
+  updateConversationStatus,
 };

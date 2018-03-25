@@ -32,7 +32,7 @@ class Conversation extends Component {
   }
 
   render() {
-    const { partner, messages, onCloseConversation } = this.props;
+    const { partner, messages, onCloseConversation, status } = this.props;
     return (
       <div className="conversation"> 
         <div>
@@ -55,7 +55,7 @@ class Conversation extends Component {
         </div>
     
         <div className="message-input-container">
-          <input onKeyUp={this.onKeyUp} ref={input => this.message = input} className="message-input" type="text" />
+          <input disabled={status === 'ended'} autoFocus onKeyUp={this.onKeyUp} ref={input => this.message = input} className="message-input" type="text" />
         </div>
       </div>
     );

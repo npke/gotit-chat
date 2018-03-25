@@ -48,7 +48,7 @@ class ChatBoard extends Component {
   render() {
     const { user, usersList, conversation } = this.props;
     const { users, isLoading } = usersList;
-    const { partner, messages } = conversation;
+    const { partner, messages, status } = conversation;
     
     return (
       <div className="chat-board">
@@ -61,7 +61,7 @@ class ChatBoard extends Component {
         <div className="right-panel">
           {
             conversation.partner 
-            ? <Conversation partner={partner} messages={messages} onSendMessage={this.sendMessage} onCloseConversation={this.closeConversation}  />
+            ? <Conversation status={status} partner={partner} messages={messages} onSendMessage={this.sendMessage} onCloseConversation={this.closeConversation}  />
             : <Placeholder />
           }
         </div>
