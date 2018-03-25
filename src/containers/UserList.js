@@ -48,7 +48,7 @@ class UserList extends Component {
 }
 
 const mapStateToProps = ({ auth, users }) => ({
-  users: users.data,//.filter(user => user.id !== auth.user.id),
+  users: users.data.filter(user => user.id !== auth.user.id),
   isLoading: users.isLoading,
 });
 
