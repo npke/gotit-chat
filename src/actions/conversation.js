@@ -46,6 +46,9 @@ const closeConversation = (data) => {
     User.getUser(data.user.id).update({ status: 'available', currentConversation: null });
     User.getUser(data.partner.id).update({ status: 'available', currentConversation: null });
 
+    // Unsubscribe listener
+    data.conversationRef.child('messages').off();
+
     return dispatch({ type: CLOSE_CONVERSATION });
   }
 };
