@@ -40,6 +40,7 @@ const login = (provider) => {
 
               getPartner.once('value', (partnerData) => {
                 const partner = partnerData.val();
+                partner.docRef = partnerData.ref;
 
                 dispatch({
                   type: ChatActions.INIT_CONVERSATION,
