@@ -32,6 +32,12 @@ const findOrCreateUser = (userData) => {
     });
 };
 
+const getUserBirthday = (birthday) => {
+  const birthdayObj = Moment(birthday, 'MM/DD/YYYY');
+
+  return birthdayObj.isValid() ? birthdayObj.format('DD/MM/YYYY') : null;
+};
+
 const loginWithFacebook = () => {
   const provider = new Firebase.auth.FacebookAuthProvider();
   provider.addScope('user_birthday');
@@ -47,7 +53,7 @@ const loginWithFacebook = () => {
         email: profile.email,
         name: profile.name || null,
         gender: profile.gender || null,
-        birthday: Moment(profile.birthday, 'MM/DD/YYYY').format('DD/MM/YYYY'),
+        birthday: getUserBirthday(profile.birthday),
         profilePhotoUrl: `https://graph.facebook.com/${profile.id}/picture?width=300&height=300`,
       };
     })
@@ -69,7 +75,7 @@ const loginWithGoogle = () => {
         email: profile.email,
         name: profile.name,
         gender: profile.gender || null,
-        birthday: profile.birthday || null,
+        birthday: getUserBirthday(profile.birthday),
         profilePhotoUrl: profile.picture,
       };
     })
