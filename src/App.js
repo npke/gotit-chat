@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 
 import LoginForm from './containers/LoginForm';
 import UserProfile from './containers/UserProfile';
-import ChatBoard from './components/ChatBoard';
+import ChatBoard from './containers/ChatBoard';
 
 const App = ({ auth }) => {
   return auth.isLoggedIn ? auth.user.updatedInfo ? <ChatBoard /> : <UserProfile /> : <LoginForm />

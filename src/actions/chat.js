@@ -28,7 +28,7 @@ const selectUser = (user) => {
 
 const initConversation = (user, partner) => {
   return dispatch => {
-    dispatch({ type: SELECT_USER, user });
+    dispatch({ type: SELECT_USER, partner });
 
     user.docRef.update({ status: 'busy' });
     partner.docRef.update({ status: 'busy' });
@@ -41,15 +41,16 @@ const initConversation = (user, partner) => {
         });
 
         user.docRef.child('currentConversation').set(conversationRef.key);
+        partner.docRef.child('currentConversation').set(conversationRef.key);
         conversationRef.child('messages').push().set({ from: 'system', to: 'both', content: `Conversation was initialized by ${user.name}` });
       });
   }
 };
 
-const sendMessage = ({ from, to, message, docRef }) => {
+const sendMessage = (conversation, message) => {
   return dispatch => {
-    const newMessage = docRef.child('messages').push();
-    newMessage.set({ from, to, content: message });
+    const newMessage = conversation.docRef.child('messages').push();
+    newMessage.set(message);
   }
 };
 
@@ -58,15 +59,15 @@ const updateConversationMessages = (messages) => ({
   messages,
 });
 
-const closeConversation = (data) => {
+const closeConversation = (conversation, user) => {
   return dispatch => {
-    data.conversationRef.child('messages').push().set({ from: 'system', to: 'both', content: `Conversation was closed by ${data.user.name}` });
-    data.conversationRef.update({ status: 'ended '}); 
-    User.getUser(data.user.id).update({ status: 'available', currentConversation: null });
-    User.getUser(data.partner.id).update({ status: 'available', currentConversation: null });
+    conversation.docRef.child('messages').push().set({ from: 'system', to: 'both', content: `Conversation was closed by ${user.name}` });
+    conversation.docRef.update({ status: 'ended '}); 
+    conversation.partner.docRef.update({ status: 'available', currentConversation: null });
+    user.docRef.update({ status: 'available', currentConversation: null });
 
     // Unsubscribe listener
-    data.conversationRef.child('messages').off();
+    conversation.docRef.child('messages').off();
 
     return dispatch({ type: CLOSE_CONVERSATION });
   }
