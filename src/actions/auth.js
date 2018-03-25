@@ -70,6 +70,7 @@ const logout = (userRef) => {
   return dispatch => {
     dispatch({ type: LOGOUT });
 
+    userRef.off();
     return userRef.update({ status: 'offline' });
   }
 };
