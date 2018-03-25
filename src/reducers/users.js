@@ -1,10 +1,10 @@
-import UserActions from '../actions/user';
+import ChatActions from '../actions/chat';
 
 export default (state = { isLoading: true, data: []}, action) => {
   switch(action.type) {
-    case UserActions.LOAD_USERS_REQUEST:
+    case ChatActions.LOAD_USERS_REQUEST:
       return Object.assign(state, { isLoading: true });
-    case UserActions.LOAD_USERS_SUCCESS:
+    case ChatActions.LOAD_USERS_SUCCESS:
       return { isLoading: false, data: action.users };
     default:
       return state;

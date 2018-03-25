@@ -1,6 +1,6 @@
 import User from '../firebase/user';
 import Conversation from '../firebase/conversation';
-import ConversationActions from '../actions/conversation';
+import ChatActions from '../actions/chat';
 
 const LOGIN_REQUEST = 'LOGIN_REQUEST';
 const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
@@ -42,7 +42,7 @@ const login = (provider) => {
                 const partner = partnerData.val();
 
                 dispatch({
-                  type: ConversationActions.INIT_CONVERSATION,
+                  type: ChatActions.INIT_CONVERSATION,
                   partner,
                   docRef: conversation
                 });
@@ -53,7 +53,7 @@ const login = (provider) => {
                     messages.push(message.val());
                   });
         
-                  dispatch(ConversationActions.updateConversationMessages(messages));
+                  dispatch(ChatActions.updateConversationMessages(messages));
                 });
               });
             });

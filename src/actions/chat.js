@@ -1,16 +1,30 @@
-import Conversation from '../firebase/conversation';
 import User from '../firebase/user';
+import Conversation from '../firebase/conversation';
 
+const LOAD_USERS_REQUEST = 'LOAD_USERS_REQUEST';
+const LOAD_USERS_SUCCESS = 'LOAD_USERS_SUCCESS';
+
+const SELECT_USER = 'SELECT_USER';
 const INIT_CONVERSATION = 'INIT_CONVERSATION';
 const CLOSE_CONVERSATION = 'CLOSE_CONVERSATION';
-const SELECT_USER = 'SELECT_USER';
-
 const UPDATE_CONVERSATION_MESSAGES = 'UPDATE_CONVERSATION_MESSAGES';
 
-const updateConversationMessages = (messages) => ({
-  type: UPDATE_CONVERSATION_MESSAGES,
-  messages,
-});
+const loadUsers = () => {
+  return dispatch => {
+    dispatch({ type: LOAD_USERS_REQUEST });
+    
+    return User.getUsers(users => dispatch({ type: LOAD_USERS_SUCCESS, users }));
+  }
+};
+
+const selectUser = (user) => {
+  return dispatch => {
+    dispatch({ type: SELECT_USER, user });
+
+    return user.docRef.update({ status: 'busy' })
+      .then(() => dispatch(ConversationActions.initConversation(user)));
+  }
+};
 
 const initConversation = (user, partner) => {
   return dispatch => {
@@ -39,6 +53,11 @@ const sendMessage = ({ from, to, message, docRef }) => {
   }
 };
 
+const updateConversationMessages = (messages) => ({
+  type: UPDATE_CONVERSATION_MESSAGES,
+  messages,
+});
+
 const closeConversation = (data) => {
   return dispatch => {
     data.conversationRef.child('messages').push().set({ from: 'system', to: 'both', content: `Conversation was closed by ${data.user.name}` });
@@ -54,12 +73,18 @@ const closeConversation = (data) => {
 };
 
 export default {
+  LOAD_USERS_REQUEST,
+  LOAD_USERS_SUCCESS,
+
+  SELECT_USER,
   INIT_CONVERSATION,
   CLOSE_CONVERSATION,
   UPDATE_CONVERSATION_MESSAGES,
   
+  loadUsers,
+  selectUser,
   initConversation,
   closeConversation,
   sendMessage,
   updateConversationMessages,
-}
+};
