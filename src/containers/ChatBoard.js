@@ -6,6 +6,7 @@ import UserInfo from '../components/UserInfo';
 import UserList from '../components/UserList';
 import Placeholder from '../components/Placeholder';
 import Conversation from '../components/Conversation';
+import Alert from '../components/Alert';
 
 import AuthActions from '../actions/auth';
 import ChatActions from '../actions/chat';
@@ -15,6 +16,9 @@ class ChatBoard extends Component {
     super(props);
 
     this.props.onInit();
+    this.state = {
+      notification: null,
+    };
   }
 
   logout = () => {
@@ -23,9 +27,38 @@ class ChatBoard extends Component {
   }
 
   selectUser = (partner) => {
+    const { conversation } = this.props;
+    if (conversation.partner && conversation.status !== 'ended') {
+      this.setState({
+        notification: {
+          title: 'Wait...',
+          message: 'Please close the current conversation before starting a new one.'
+        }
+      });
+
+      return;
+    }
+
     const { user, onSelectUser } = this.props;
+
+    if (partner.status !== 'available') {
+      this.setState({
+        notification: {
+          title: 'User is not available',
+          message: 'This user is currently busy (yellow) or offline (red). Please select an available user (green).'
+        }
+      });
+
+      return;
+    }
     
     return onSelectUser(user, partner);
+  }
+
+  hideNotification = () => {
+    this.setState({
+      notification: null
+    });
   }
 
   sendMessage = (content) => {
@@ -49,6 +82,7 @@ class ChatBoard extends Component {
     const { user, usersList, conversation } = this.props;
     const { users, isLoading } = usersList;
     const { partner, messages, status } = conversation;
+    const { notification } = this.state;
     
     return (
       <div className="chat-board">
@@ -65,6 +99,8 @@ class ChatBoard extends Component {
             : <Placeholder />
           }
         </div>
+
+        {notification && <Alert title={notification.title} message={notification.message} onClose={this.hideNotification} />}
       </div>
     );
   }
