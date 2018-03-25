@@ -2,6 +2,10 @@
 
 ### Demo
 https://gotit-chat.firebaseapp.com
+
+### Screencast 
+![](https://i.imgur.com/BmH0qZw.gif) 
+
 ### Screenshot
 
 #### Login with Facebook/Google  
