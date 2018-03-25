@@ -1,17 +1,17 @@
 import React, { Component } from 'react';
 import { Segment } from 'semantic-ui-react';
-import { connect } from 'react-redux';
+// import { connect } from 'react-redux';
 
-import User from '../components/User';
-import Alert from '../components/Alert';
-import UserActions from '../actions/user';
+import User from './User';
+import Alert from './Alert';
+// import UserActions from '../actions/user';
 import "./UserList.css";
 
 class UserList extends Component {
   constructor(props) {
     super(props);
 
-    this.props.onInit();
+    // this.props.onInit();
     this.state = {
       selectInvalidUser: false,
     }
@@ -47,13 +47,14 @@ class UserList extends Component {
   }
 }
 
-const mapStateToProps = ({ auth, users }) => ({
-  users: users.data.filter(user => user.id !== auth.user.id),
-  isLoading: users.isLoading,
-});
+// const mapStateToProps = ({ auth, users }) => ({
+//   users: users.data.filter(user => user.id !== auth.user.id),
+//   isLoading: users.isLoading,
+// });
 
-const mapDispatchToProps = (dispatch) => ({
-  onInit: () => dispatch(UserActions.initUserList())
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   onInit: () => dispatch(UserActions.initUserList())
+// });
 
-export default connect(mapStateToProps, mapDispatchToProps)(UserList);
+// export default connect(mapStateToProps, mapDispatchToProps)(UserList);
+export default UserList;
