@@ -15,6 +15,10 @@ class UserProfile extends Component {
   }
 
   saveProfile = () => {
+    this.setState({
+      error: null,
+    })
+
     const name = this.nameInput.value;
     const birthday = this.birthdayInput.value;
     const gender = this.state.gender;
@@ -35,6 +39,12 @@ class UserProfile extends Component {
     if (!birthdayObj.isValid()) {
       return this.setState({
         error:  new Error('Please enter your birthday in DD/MM/YYYY format.')
+      });
+    }
+
+    if (birthdayObj.isAfter(Moment())) {
+      return this.setState({
+        error:  new Error('Please be honest!'),
       });
     }
 
