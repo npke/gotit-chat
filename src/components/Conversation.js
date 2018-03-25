@@ -3,8 +3,7 @@ import { connect } from 'react-redux';
 import { Icon } from 'semantic-ui-react';
 
 import "./Conversation.css";
-import ConversationActions from '../actions/conversation';
-import Message from '../components/Message';
+import Message from './Message';
 
 class Conversation extends Component {
 
@@ -27,12 +26,9 @@ class Conversation extends Component {
       
       if (!message) return;
 
-      const { conversationRef, onSendMessage, partner, user } = this.props;
       this.message.value = '';
       return onSendMessage({
-        from: user.id,
         to: partner.id,
-        docRef: conversationRef,
         message,
       });
     }
@@ -48,7 +44,7 @@ class Conversation extends Component {
               <img className="user-profile-photo" src={partner.profilePhotoUrl} />
               <h3 className="user-title">{partner.name}</h3>
             </div>
-            <Icon onClick={() => onCloseConversation(this.props)} size="large" name="close" />
+            <Icon onClick={onCloseConversation} size="large" name="close" />
           </div>
         </div>
     
@@ -69,16 +65,4 @@ class Conversation extends Component {
   }
 };
 
-const mapStateToProps = ({ conversation, auth }) => ({
-  user: auth.user,
-  partner: conversation.partner,
-  messages: conversation.messages,
-  conversationRef: conversation.docRef,
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  onCloseConversation: (data) => dispatch(ConversationActions.closeConversation(data)),
-  onSendMessage: (data) => dispatch(ConversationActions.sendMessage(data)), 
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(Conversation);
+export default Conversation;
