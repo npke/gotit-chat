@@ -1,8 +1,9 @@
 import React from 'react';
 import { Icon } from 'semantic-ui-react';
+import './Placeholder.css';
 
 const Placeholer = () => (
-  <div style={{ padding: '20 0%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', flexDirection: 'column' }}>
+  <div className="conversation-placeholder">
     <Icon size="massive" color="violet" name="comments outline"></Icon>
     <h2>Select a friend to start chatting!!!</h2>
   </div>
