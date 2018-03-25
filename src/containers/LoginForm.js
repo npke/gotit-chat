@@ -16,7 +16,7 @@ const LoginForm = ({ onFacebookLogin, onGoogleLogin, error, isLogging }) => (
     <Grid textAlign="center" style={{ height: "100%" }} verticalAlign="middle">
       <Grid.Column verticalAlign="middle" style={{ maxWidth: 450 }}>
 
-      <Image style={{ margin: 'auto' }} size="small" src="/assets/images/logo-gotit.png" />      
+      <Image style={{ margin: 'auto' }} size="small" src="/assets/images/logo.png" />      
       <Header as="h2" color="violet" textAlign="center" style={{ marginBottom: '65px' }}>
       {" "}Enjoy every moment with your lovely friends
       </Header>
