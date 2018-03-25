@@ -7,8 +7,8 @@ const LOAD_USERS_SUCCESS = 'LOAD_USERS_SUCCESS';
 const SELECT_USER = 'SELECT_USER';
 const INIT_CONVERSATION = 'INIT_CONVERSATION';
 const CLOSE_CONVERSATION = 'CLOSE_CONVERSATION';
-const UPDATE_CONVERSATION_MESSAGES = 'UPDATE_CONVERSATION_MESSAGES';
 const UPDATE_CONVERSATION_STATUS = 'UPDATE_CONVERSATION_STATUS';
+const RECEIVE_NEW_MESSAGE = 'RECEIVE_NEW_MESSAGE';
 
 const loadUsers = () => {
   return dispatch => {
@@ -44,11 +44,6 @@ const sendMessage = (conversation, message) => {
   }
 };
 
-const updateConversationMessages = (messages) => ({
-  type: UPDATE_CONVERSATION_MESSAGES,
-  messages,
-});
-
 const closeConversation = (conversation, user) => {
 
   // Unsubscribe listener
@@ -74,6 +69,11 @@ const updateConversationStatus = (status) => ({
   status,
 });
 
+const receiveNewMessage = (message) => ({
+  type: RECEIVE_NEW_MESSAGE,
+  message,
+});
+
 export default {
   LOAD_USERS_REQUEST,
   LOAD_USERS_SUCCESS,
@@ -81,13 +81,13 @@ export default {
   SELECT_USER,
   INIT_CONVERSATION,
   CLOSE_CONVERSATION,
-  UPDATE_CONVERSATION_MESSAGES,
   UPDATE_CONVERSATION_STATUS,
+  RECEIVE_NEW_MESSAGE,
   
   loadUsers,
   initConversation,
   closeConversation,
   sendMessage,
-  updateConversationMessages,
   updateConversationStatus,
+  receiveNewMessage,
 };

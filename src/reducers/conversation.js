@@ -15,8 +15,9 @@ export default (state = { partner: null, messages: []}, action) => {
         partner: null,
         messages: []
       };
-    case ChatActions.UPDATE_CONVERSATION_MESSAGES:
-      return Object.assign({}, state, { messages: action.messages });
+    case ChatActions.RECEIVE_NEW_MESSAGE:
+      const messages = [...state.messages, action.message];
+      return Object.assign({}, state, { messages });
     case ChatActions.UPDATE_CONVERSATION_STATUS:
       return Object.assign({}, state, { status: action.status });
     default: return state;
