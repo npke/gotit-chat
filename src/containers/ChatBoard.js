@@ -21,12 +21,7 @@ class ChatBoard extends Component {
     };
   }
 
-  logout = () => {
-    const { user, onLogout, conversation } = this.props;
-    return onLogout(user, conversation);
-  }
-
-  selectUser = (partner) => {
+  selectUser = (user) => {
     const { conversation } = this.props;
     if (conversation.partner && conversation.status !== 'ended') {
       this.setState({
@@ -39,9 +34,9 @@ class ChatBoard extends Component {
       return;
     }
 
-    const { user, onSelectUser } = this.props;
+    const { onSelectUser } = this.props;
 
-    if (partner.status !== 'available') {
+    if (user.status !== 'available') {
       this.setState({
         notification: {
           title: 'User is not available',
@@ -52,7 +47,7 @@ class ChatBoard extends Component {
       return;
     }
     
-    return onSelectUser(user, partner);
+    return onSelectUser(user);
   }
 
   hideNotification = () => {
@@ -61,25 +56,15 @@ class ChatBoard extends Component {
     });
   }
 
-  sendMessage = (content) => {
-    const { conversation, user, onSendMessage } = this.props;
-    const message = {
-      content,
-      from: user.id,
-      to: conversation.partner.id
-    };
-
-    return onSendMessage(conversation, message);
-  }
-
-  closeConversation = () => {
-    const { conversation, user } = this.props;
-
-    return this.props.onCloseConversation(conversation, user);
-  }
-
   render() {
-    const { user, usersList, conversation } = this.props;
+    const {
+      user,
+      usersList,
+      conversation,
+      onLogout,
+      onSendMessage,
+      onCloseConversation
+    } = this.props;
     const { users, isLoading } = usersList;
     const { partner, messages, status } = conversation;
     const { notification } = this.state;
@@ -87,7 +72,7 @@ class ChatBoard extends Component {
     return (
       <div className="chat-board">
         <div className="left-pannel">
-          <UserInfo {...user} onLogout={this.logout} />
+          <UserInfo {...user} onLogout={onLogout} />
     
           <UserList users={users} isLoading={isLoading} onSelectUser={this.selectUser} />
         </div>
@@ -95,7 +80,7 @@ class ChatBoard extends Component {
         <div className="right-panel">
           {
             conversation.partner 
-            ? <Conversation status={status} partner={partner} messages={messages} onSendMessage={this.sendMessage} onCloseConversation={this.closeConversation}  />
+            ? <Conversation status={status} partner={partner} messages={messages} onSendMessage={onSendMessage} onCloseConversation={onCloseConversation}  />
             : <Placeholder />
           }
         </div>
@@ -117,16 +102,10 @@ const mapStateToProps = ({ auth, users, conversation }) => ({
 
 const mapDispatchToProps = (dispatch) => ({
   onInit: () => dispatch(ChatActions.loadUsers()),
-  onLogout: (user, converstation) => {
-    if (converstation.partner) {
-      dispatch(ChatActions.closeConversation(converstation, user));
-    }
-
-    dispatch(AuthActions.logout(user.docRef));
-  },
-  onSelectUser: (user, partner) => dispatch(ChatActions.initConversation(user, partner)),
-  onSendMessage: (conversation, message) => dispatch(ChatActions.sendMessage(conversation, message)),
-  onCloseConversation: (conversation, user) => dispatch(ChatActions.closeConversation(conversation, user)),
+  onLogout: () => dispatch(AuthActions.logout()),
+  onSelectUser: user => dispatch(ChatActions.initConversation(user)),
+  onSendMessage: message => dispatch(ChatActions.sendMessage(message)),
+  onCloseConversation: () => dispatch(ChatActions.closeConversation()),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(ChatBoard);

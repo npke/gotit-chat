@@ -83,12 +83,20 @@ const login = (provider) => {
   };
 };
 
-const logout = (userRef) => {
-  return dispatch => {
-    dispatch({ type: LOGOUT });
+const logout = () => {
+  return (dispatch, getState) => {
+    const { auth, conversation } = getState();
+    const { user } = auth;
 
+    if (conversation.partner) {
+      dispatch(ChatActions.closeConversation(conversation, user));
+    }
+
+    const userRef = user.docRef;
     userRef.off();
-    return userRef.update({ status: 'offline' });
+    userRef.update({ status: 'offline' });
+
+    dispatch({ type: LOGOUT });    
   }
 };
 
